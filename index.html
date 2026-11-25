@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Shorts Safe Zone Checker | Free UI Preview</title>
+  <meta name="description" content="Free YouTube Shorts safe zone checker and shorts UI overlay preview tool. Test captions, hooks, and export a 1080x1920 PNG guide right in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://example.com/youtube-shorts-safe-zone-checker">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="YouTube Shorts Safe Zone Checker | Free UI Preview">
+  <meta property="og:description" content="Preview your 9:16 videos under the real YouTube Shorts interface. Check safe zones for captions and download a transparent 1080x1920 PNG template.">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="YouTube Shorts Safe Zone Checker | Free UI Preview">
+  <meta name="twitter:description" content="Check if YouTube's buttons or caption bar cover your text. 100% local browser tool with free 1080x1920 PNG overlay export.">
+
+  <!-- Inline SVG Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='4' width='36' height='56' rx='7' fill='%2312141a' stroke='%23ff0033' stroke-width='4'/%3E%3Crect x='20' y='14' width='22' height='26' fill='none' stroke='%2322c55e' stroke-width='2.5' stroke-dasharray='4 3' rx='2'/%3E%3Cpolygon points='28,21 28,33 38,27' fill='%23ffffff'/%3E%3C/svg%3E">
+
+  <!-- Structured Data (WebApplication + FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "YouTube Shorts Safe Zone Checker",
+        "description": "A free, privacy-first shorts UI overlay preview tool that lets creators test 9:16 vertical videos and images against the YouTube Shorts interface and export a 1080x1920 PNG safe zone template.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires HTML5 and JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "100% client-side image and video preview",
+          "Realistic 9:16 YouTube Shorts UI overlay",
+          "Toggleable safe zone danger highlights",
+          "Adjustable overlay opacity slider",
+          "1080x1920 transparent PNG template download"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are the exact YouTube Shorts safe zone dimensions in pixels?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "On a standard 1080x1920px vertical canvas, leave 288px (15%) clear at the top, 672px (35%) at the bottom, 216px (20%) on the right, and at least 48px on the left. That gives you a reliable 816x960px safe box in the center-left for captions, hooks, and visual callouts."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this YouTube Shorts safe zone checker upload my video files?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Every image or video you load stays strictly on your device using your browser's local memory. Nothing is sent to a server, so unreleased client edits and sponsor reads stay completely private."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I use the downloaded PNG template in Premiere Pro, CapCut, or DaVinci Resolve?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Click the Download 1080x1920 PNG Template button and drag the file onto the top video track of your 9:16 timeline. Align your subtitles and graphics inside the green dashed rectangle, then mute or delete the guide track right before exporting."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do I need a shorts UI overlay preview tool if my editor already has title-safe guides?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Standard broadcast title-safe margins are built for horizontal TV screens and ignore mobile app buttons. A shorts UI overlay preview tool mirrors YouTube's actual Like, Comment, Share, Subscribe, and caption placements so your hook never gets buried behind the interface."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg-page: #0b0d12;
+      --bg-surface: #13161f;
+      --bg-elevated: #1b202d;
+      --bg-input: #0f121a;
+      --border: #262c3d;
+      --border-strong: #374059;
+      --text-primary: #f3f5f9;
+      --text-secondary: #9ea8bd;
+      --text-muted: #768097;
+      --accent: #ff0033;
+      --accent-hover: #e0002d;
+      --accent-soft: rgba(255, 0, 51, 0.14);
+      --safe-green: #22c55e;
+      --danger-red: rgba(239, 68, 68, 0.34);
+      --danger-border: rgba(248, 113, 113, 0.85);
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+      --phone-bezel: #181a20;
+      --phone-border: #323746;
+      --yt-nav-bg: #0f0f0f;
+      --yt-nav-text: #ffffff;
+      --yt-nav-border: rgba(255, 255, 255, 0.12);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-page: #f4f6fa;
+      --bg-surface: #ffffff;
+      --bg-elevated: #eef1f7;
+      --bg-input: #f8f9fc;
+      --border: #dce2ee;
+      --border-strong: #c2cbe0;
+      --text-primary: #111521;
+      --text-secondary: #4a546b;
+      --text-muted: #68738c;
+      --accent-soft: rgba(255, 0, 51, 0.09);
+      --shadow-lg: 0 20px 50px rgba(17, 21, 33, 0.14);
+      --phone-bezel: #1c1f26;
+      --phone-border: #3d4354;
+      --yt-nav-bg: #ffffff;
+      --yt-nav-text: #0f0f0f;
+      --yt-nav-border: rgba(0, 0, 0, 0.1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+      padding: 18px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      margin: 2px 0 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--safe-green);
+    }
+
+    /* Workspace Layout */
+    main {
+      padding: 28px 0 64px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(320px, 440px) 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+    }
+
+    .panel-title {
+      margin: 0 0 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      position: relative;
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--bg-input);
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .dropzone:hover,
+    .dropzone.is-dragover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .dropzone-icon {
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 8px;
+      color: var(--text-secondary);
+    }
+
+    .dropzone-title {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .dropzone-hint {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .file-status {
+      margin-top: 10px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--bg-elevated);
+      font-size: 0.82rem;
+    }
+
+    .file-status.is-visible {
+      display: flex;
+    }
+
+    .file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 650;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-elevated);
+      border-color: var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--border-strong);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-primary);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Control Groups */
+    .control-divider {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+
+    .toggle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-label {
+      font-size: 0.9rem;
+      font-weight: 550;
+    }
+
+    .toggle-desc {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .slider-track {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      transition: background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .slider-track::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+      background: var(--text-secondary);
+      transition: transform 0.18s ease, background-color 0.18s ease;
+    }
+
+    .switch input:checked + .slider-track {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .switch input:checked + .slider-track::before {
+      transform: translateX(20px);
+      background: #ffffff;
+    }
+
+    .switch input:focus-visible + .slider-track {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 2px;
+    }
+
+    /* Range Slider */
+    .range-block {
+      margin-top: 16px;
+    }
+
+    .range-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 550;
+    }
+
+    .range-value {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      background: var(--bg-elevated);
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      height: 6px;
+    }
+
+    /* Video Controls */
+    .playback-bar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .export-note {
+      margin: 10px 0 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Right Column: Phone Preview Stage */
+    .preview-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px 20px;
+      min-height: 680px;
+    }
+
+    .stage-meta {
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .legend-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .swatch-safe {
+      width: 10px;
+      height: 10px;
+      border: 2px dashed var(--safe-green);
+      border-radius: 2px;
+    }
+
+    .swatch-danger {
+      width: 10px;
+      height: 10px;
+      background: rgba(239, 68, 68, 0.55);
+      border-radius: 2px;
+    }
+
+    /* Realistic 9:16 Phone Frame */
+    .phone-frame {
+      position: relative;
+      width: 100%;
+      max-width: 342px;
+      background: var(--phone-bezel);
+      border-radius: 38px;
+      padding: 11px;
+      border: 2px solid var(--phone-border);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 78px;
+      height: 18px;
+      background: #090a0d;
+      border-radius: 999px;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: #0d0f14;
+      border-radius: 28px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    /* Empty State inside Screen */
+    .screen-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255, 0, 51, 0.14), transparent 55%),
+        linear-gradient(180deg, #151924 0%, #0d0f14 100%);
+      color: #c5cde0;
+      z-index: 1;
+    }
+
+    .screen-empty.is-hidden {
+      display: none;
+    }
+
+    .screen-empty strong {
+      color: #ffffff;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+    }
+
+    .screen-empty p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #8f9bb5;
+      max-width: 210px;
+    }
+
+    /* Media Layer */
+    .media-el {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      z-index: 2;
+      background: #000000;
+    }
+
+    .media-el.is-active {
+      display: block;
+    }
+
+    /* Safe Zone Overlay Layer */
+    .safe-zone-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .safe-zone-layer.is-hidden {
+      opacity: 0;
+    }
+
+    .danger-zone {
+      position: absolute;
+      background: var(--danger-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      text-transform: uppercase;
+    }
+
+    .dz-top {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 15%;
+      border-bottom: 1px solid var(--danger-border);
+      align-items: flex-end;
+      padding-bottom: 6px;
+    }
+
+    .dz-bottom {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 35%;
+      border-top: 1px solid var(--danger-border);
+      align-items: flex-start;
+      padding-top: 8px;
+    }
+
+    .dz-right {
+      top: 15%;
+      bottom: 35%;
+      right: 0;
+      width: 20%;
+      border-left: 1px solid var(--danger-border);
+    }
+
+    .dz-right span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .dz-left {
+      top: 15%;
+      bottom: 35%;
+      left: 0;
+      width: 4.444%;
+      background: rgba(239, 68, 68, 0.22);
+      border-right: 1px dashed rgba(248, 113, 113, 0.65);
+    }
+
+    .safe-box {
+      position: absolute;
+      top: 15%;
+      bottom: 35%;
+      left: 4.444%;
+      right: 20%;
+      border: 2px dashed var(--safe-green);
+      box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.25);
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 6px;
+    }
+
+    .safe-tag {
+      background: rgba(10, 14, 18, 0.78);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.65);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    /* YouTube Shorts UI Overlay Layer */
+    .yt-ui-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 25;
+      pointer-events: none;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: opacity 0.12s ease;
+    }
+
+    .yt-ui-layer.is-hidden {
+      display: none;
+    }
+
+    /* Top Gradient + Top Bar */
+    .yt-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 14px 14px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .yt-top-label {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    }
+
+    .yt-top-icons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+    }
+
+    /* Main Overlay Middle + Bottom */
+    .yt-lower-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.35) 58%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .yt-content-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 10px 10px 12px;
+      gap: 10px;
+    }
+
+    /* Bottom-Left Metadata */
+    .yt-meta-col {
+      flex: 1;
+      min-width: 0;
+      padding-bottom: 4px;
+    }
+
+    .yt-channel-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+    }
+
+    .yt-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0033, #ff6b00);
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .yt-handle {
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .yt-subscribe {
+      background: #ffffff;
+      color: #0f0f0f;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    .yt-caption {
+      margin: 0 0 8px;
+      font-size: 12px;
+      line-height: 1.32;
+      color: rgba(255, 255, 255, 0.96);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .yt-audio-ticker {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.92);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Right-Side Action Buttons */
+    .yt-actions-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 46px;
+      flex-shrink: 0;
+    }
+
+    .yt-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+    }
+
+    .yt-icon-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .yt-audio-thumb {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Progress Bar */
+    .yt-scrubber {
+      height: 2px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .yt-scrubber-fill {
+      height: 100%;
+      width: 38%;
+      background: #ff0033;
+    }
+
+    /* Bottom Navigation Bar */
+    .yt-bottom-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      height: 46px;
+      background: var(--yt-nav-bg);
+      color: var(--yt-nav-text);
+      border-top: 1px solid var(--yt-nav-border);
+      padding: 0 4px 2px;
+    }
+
+    .yt-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      font-size: 8.5px;
+      font-weight: 500;
+      opacity: 0.75;
+    }
+
+    .yt-nav-item.is-active {
+      opacity: 1;
+      font-weight: 700;
+    }
+
+    .yt-nav-plus {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* On-Page Guide & SEO Content */
+    .guide-section {
+      margin-top: 48px;
+      display: grid;
+      gap: 32px;
+    }
+
+    .content-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .content-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+      letter-spacing: -0.015em;
+    }
+
+    .content-card p {
+      margin: 0 0 16px;
+      color: var(--text-secondary);
+      max-width: 74ch;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .spec-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .spec-box.is-safe {
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .spec-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .spec-value {
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 750;
+      color: var(--text-primary);
+    }
+
+    .spec-note {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .benefit-list {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 10px;
+      color: var(--text-secondary);
+    }
+
+    .benefit-list strong {
+      color: var(--text-primary);
+    }
+
+    /* FAQ */
+    .faq-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-elevated);
+      padding: 16px 18px;
+    }
+
+    .faq-item h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    .faq-item p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 0 40px;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-stage {
+        min-height: auto;
+        padding: 20px 14px;
+      }
+
+      .content-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect x="8" y="2" width="24" height="36" rx="5" fill="#13161f" stroke="#ff0033" stroke-width="2.5"/>
+          <rect x="11.5" y="8" width="14.5" height="17" rx="1.5" stroke="#22c55e" stroke-width="1.8" stroke-dasharray="3 2"/>
+          <polygon points="16.5,13 16.5,20 22.5,16.5" fill="#ffffff"/>
+        </svg>
+        <div>
+          <h1>YouTube Shorts Safe Zone Checker</h1>
+          <p class="brand-sub">Preview 9:16 videos under the real Shorts UI before you hit publish.</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="pill-badge"><span class="pill-dot" aria-hidden="true"></span>100% Local — Zero Server Uploads</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="workspace" aria-label="YouTube Shorts Safe Zone Checker Tool">
+      <!-- Left Column: Controls -->
+      <div class="panel">
+        <h2 class="panel-title">1. Load Vertical Media</h2>
+
+        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload an image or video file">
+          <input type="file" id="mediaInput" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm" aria-label="Choose vertical image or video">
+          <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <p class="dropzone-title">Drop a 9:16 image or video here</p>
+          <p class="dropzone-hint">PNG, JPG, WebP, MP4, or WebM — stays in your browser</p>
+        </div>
+
+        <div class="file-status" id="fileStatus">
+          <span class="file-name" id="fileName">No file loaded</span>
+          <button type="button" class="btn btn-ghost" id="clearMediaBtn">Clear</button>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="btn btn-secondary" id="loadSampleBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            Load Sample Preview
+          </button>
+          <button type="button" class="btn btn-secondary" id="playPauseBtn" disabled aria-label="Play or pause video">
+            <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <polygon points="6,4 20,12 6,20"/>
+            </svg>
+            <svg id="pauseIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none" aria-hidden="true">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+            <span id="playPauseLabel">Play</span>
+          </button>
+        </div>
+
+        <hr class="control-divider">
+
+        <h2 class="panel-title">2. Overlay &amp; Grid Controls</h2>
+
+        <div class="toggle-list">
+          <label class="toggle-row" for="toggleUiOverlay">
+            <span>
+              <span class="toggle-label">Show UI Overlay</span>
+              <span class="toggle-desc">Buttons, channel handle, caption, and bottom nav</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="toggleUiOverlay" checked>
+              <span class="slider-track"></span>
+            </span>
+          </label>
+
+          <label class="toggle-row" for="toggleSafeZone">
+            <span>
+              <span class="toggle-label">Show Safe Zone Grid</span>
+              <span class="toggle-desc">Red danger margins + green 100% safe caption box</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="toggleSafeZone" checked>
+              <span class="slider-track"></span>
+            </span>
+          </label>
+
+          <label class="toggle-row" for="toggleThemeMode">
+            <span>
+              <span class="toggle-label">Light Mode Preview</span>
+              <span class="toggle-desc">Switch studio workspace &amp; YouTube nav bar theme</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="toggleThemeMode">
+              <span class="slider-track"></span>
+            </span>
+          </label>
+        </div>
+
+        <div class="range-block">
+          <div class="range-header">
+            <label for="opacitySlider">UI Overlay Opacity</label>
+            <span class="range-value" id="opacityValue">100%</span>
+          </div>
+          <input type="range" id="opacitySlider" min="0" max="100" value="100" aria-label="UI overlay opacity percentage">
+        </div>
+
+        <hr class="control-divider">
+
+        <h2 class="panel-title">3. Export for Your Editor</h2>
+        <button type="button" class="btn btn-primary btn-full" id="downloadPngBtn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download PNG Overlay Template (1080×1920)
+        </button>
+        <p class="export-note">Generates a transparent 1080×1920 PNG guide you can drop directly on Track 2 in Premiere Pro, CapCut, or DaVinci Resolve.</p>
+      </div>
+
+      <!-- Right Column: Live 9:16 Phone Preview -->
+      <div class="preview-stage" aria-label="Live 9:16 YouTube Shorts preview">
+        <div class="stage-meta">
+          <span>9:16 • 1080×1920px</span>
+          <div class="legend-row">
+            <span class="legend-item"><span class="swatch-safe" aria-hidden="true"></span>Safe Area</span>
+            <span class="legend-item"><span class="swatch-danger" aria-hidden="true"></span>Blocked UI</span>
+          </div>
+        </div>
+
+        <div class="phone-frame">
+          <div class="phone-notch" aria-hidden="true"></div>
+          <div class="phone-screen" id="phoneScreen">
+            <!-- Empty State -->
+            <div class="screen-empty" id="screenEmpty">
+              <strong>9:16 Live Preview</strong>
+              <p>Upload a screenshot or short clip—or click "Load Sample Preview" to test the safe zone overlay.</p>
+            </div>
+
+            <!-- Uploaded Image or Video -->
+            <img id="previewImage" class="media-el" alt="Uploaded vertical preview">
+            <video id="previewVideo" class="media-el" playsinline loop muted></video>
+
+            <!-- Safe Zone Danger Highlight -->
+            <div class="safe-zone-layer" id="safeZoneLayer" aria-hidden="true">
+              <div class="danger-zone dz-top">Top 15% (288px)</div>
+              <div class="danger-zone dz-left"></div>
+              <div class="danger-zone dz-right"><span>Right 20% (216px)</span></div>
+              <div class="danger-zone dz-bottom">Bottom 35% (672px) — Captions &amp; Nav</div>
+              <div class="safe-box">
+                <span class="safe-tag">SAFE ZONE 816×960</span>
+              </div>
+            </div>
+
+            <!-- Accurate YouTube Shorts UI Overlay -->
+            <div class="yt-ui-layer" id="ytUiLayer" aria-hidden="true">
+              <!-- Top Bar -->
+              <div class="yt-top-bar">
+                <span class="yt-top-label">Shorts</span>
+                <div class="yt-top-icons">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7.5"/>
+                    <line x1="20" y1="20" x2="16.4" y2="16.4"/>
+                  </svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="5" r="1.8"/>
+                    <circle cx="12" cy="12" r="1.8"/>
+                    <circle cx="12" cy="19" r="1.8"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Lower UI Stack + Bottom Nav -->
+              <div class="yt-lower-wrap">
+                <div class="yt-content-row">
+                  <!-- Bottom-Left Channel, Subscribe, Caption & Audio -->
+                  <div class="yt-meta-col">
+                    <div class="yt-channel-row">
+                      <div class="yt-avatar">YT</div>
+                      <span class="yt-handle">@CreatorStudio</span>
+                      <span class="yt-subscribe">Subscribe</span>
+                    </div>
+                    <p class="yt-caption">Stop letting YouTube buttons cover your captions — check your safe margins before exporting #shorts</p>
+                    <div class="yt-audio-ticker">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+                      </svg>
+                      <span>Original Sound — CreatorStudio</span>
+                    </div>
+                  </div>
+
+                  <!-- Right-Side Action Buttons -->
+                  <div class="yt-actions-col">
+                    <div class="yt-action-btn">
+                      <span class="yt-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 6.59 7.59C6.22 7.95 6 8.45 6 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                        </svg>
+                      </span>
+                      <span>142K</span>
+                    </div>
+
+                    <div class="yt-action-btn">
+                      <span class="yt-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M22 3h-4v12h4V3zM2 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L10.83 23l6.58-6.59c.37-.36.59-.86.59-1.41V5c0-1.1-.9-2-2-2H7c-.83 0-1.54.5-1.84 1.22L2.14 11.27c-.09.23-.14.47-.14.73v2z"/>
+                        </svg>
+                      </span>
+                      <span>Dislike</span>
+                    </div>
+
+                    <div class="yt-action-btn">
+                      <span class="yt-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                        </svg>
+                      </span>
+                      <span>1.8K</span>
+                    </div>
+
+                    <div class="yt-action-btn">
+                      <span class="yt-icon-circle">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z"/>
+                        </svg>
+                      </span>
+                      <span>Share</span>
+                    </div>
+
+                    <div class="yt-action-btn">
+                      <span class="yt-icon-circle">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="17 1 21 5 17 9"/>
+                          <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                          <polyline points="7 23 3 19 7 15"/>
+                          <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                        </svg>
+                      </span>
+                      <span>Remix</span>
+                    </div>
+
+                    <div class="yt-audio-thumb">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff">
+                        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Red Progress Scrubber -->
+                <div class="yt-scrubber">
+                  <div class="yt-scrubber-fill"></div>
+                </div>
+
+                <!-- Bottom Navigation Bar -->
+                <div class="yt-bottom-nav">
+                  <div class="yt-nav-item">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 10.5L12 3l9 7.5V21h-6v-6H9v6H3v-10.5z"/>
+                    </svg>
+                    <span>Home</span>
+                  </div>
+                  <div class="yt-nav-item is-active">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.77 10.32l-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.06s-3.24-2.53-5.07-1.56L6 6.94c-1.29.68-2.07 2.04-2 3.49.07 1.42.93 2.67 2.22 3.25.03.01 1.2.5 1.2.5L6 14.93c-1.83.97-2.53 3.24-1.56 5.07.97 1.83 3.24 2.53 5.07 1.56l8.5-4.5c1.29-.68 2.06-2.04 1.99-3.49-.07-1.42-.94-2.68-2.23-3.25zM10 14.65v-5.3L15 12l-5 2.65z"/>
+                    </svg>
+                    <span>Shorts</span>
+                  </div>
+                  <div class="yt-nav-item">
+                    <span class="yt-nav-plus">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="yt-nav-item">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="8" width="18" height="12" rx="2"/>
+                      <line x1="6" y1="4" x2="18" y2="4"/>
+                    </svg>
+                    <span>Subs</span>
+                  </div>
+                  <div class="yt-nav-item">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="8" r="4"/>
+                      <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/>
+                    </svg>
+                    <span>You</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Helpful On-Page Guide & SEO Content -->
+    <article class="guide-section">
+      <section class="content-card">
+        <h2>YouTube Shorts Safe Zone Dimensions (1080×1920px)</h2>
+        <p>YouTube Shorts run at a 9:16 vertical aspect ratio (1080×1920 pixels). Because the mobile app pins icons, channel handles, and video titles directly over your footage, keep your subtitles, hooks, and lower-thirds inside these exact margins:</p>
+
+        <div class="specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Canvas Size</div>
+            <div class="spec-value">1080 × 1920 px</div>
+            <div class="spec-note">Standard 9:16 vertical HD</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Top Margin</div>
+            <div class="spec-value">288 px (15%)</div>
+            <div class="spec-note">Phone notch, Search &amp; menu</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Bottom Margin</div>
+            <div class="spec-value">672 px (35%)</div>
+            <div class="spec-note">Channel, Subscribe, title &amp; nav</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Right Margin</div>
+            <div class="spec-value">216 px (20%)</div>
+            <div class="spec-note">Like, Comment, Share &amp; Remix</div>
+          </div>
+          <div class="spec-box is-safe">
+            <div class="spec-label">100% Safe Box</div>
+            <div class="spec-value">816 × 960 px</div>
+            <div class="spec-note">Includes 48px left breathing room</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <h2>Why Use a Shorts UI Overlay Preview Tool?</h2>
+        <ul class="benefit-list">
+          <li><strong>Keep your 3-second hook readable:</strong> If your opening text sits too high or too low, YouTube's search bar or description cuts it off—and viewers swipe away immediately.</li>
+          <li><strong>Stop subtitles from colliding with the Subscribe button:</strong> Auto-captions in CapCut and Premiere often default to the lower third, right where the channel name and audio ticker live.</li>
+          <li><strong>Protect product demos and sponsor tags:</strong> The right-side column takes up 20% of the frame width. Checking your edit with a shorts UI overlay preview tool ensures key visuals stay clear of the Like and Comment icons.</li>
+          <li><strong>Export once instead of re-uploading:</strong> Spot layout problems in 10 seconds inside your browser instead of publishing an unlisted test Short to your phone.</li>
+        </ul>
+      </section>
+
+      <section class="content-card">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3>What are the exact YouTube Shorts safe zone dimensions in pixels?</h3>
+            <p>On a standard 1080×1920px vertical canvas, leave 288px (15%) clear at the top, 672px (35%) at the bottom, 216px (20%) on the right, and at least 48px on the left. That gives you a reliable 816×960px safe box in the center-left for captions, hooks, and visual callouts.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Does this YouTube Shorts safe zone checker upload my video files?</h3>
+            <p>No. Every image or video you load stays strictly on your device using your browser's local memory. Nothing is sent to a server, so unreleased client edits and sponsor reads stay completely private.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I use the downloaded PNG template in Premiere Pro, CapCut, or DaVinci Resolve?</h3>
+            <p>Click the Download PNG Overlay Template button and drag the file onto the top video track of your 9:16 timeline. Align your subtitles and graphics inside the green dashed rectangle, then mute or delete the guide track right before exporting.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Why do I need a shorts UI overlay preview tool if my editor already has title-safe guides?</h3>
+            <p>Standard broadcast title-safe margins are built for horizontal TV screens and ignore mobile app buttons. A shorts UI overlay preview tool mirrors YouTube's actual Like, Comment, Share, Subscribe, and caption placements so your hook never gets buried behind the interface.</p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>YouTube Shorts Safe Zone Checker — Built for creators &amp; video editors.</span>
+      <span>Runs 100% locally in your browser. Not affiliated with YouTube or Google.</span>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const dropzone = document.getElementById('dropzone');
+      const mediaInput = document.getElementById('mediaInput');
+      const fileStatus = document.getElementById('fileStatus');
+      const fileNameEl = document.getElementById('fileName');
+      const clearMediaBtn = document.getElementById('clearMediaBtn');
+      const loadSampleBtn = document.getElementById('loadSampleBtn');
+
+      const previewImage = document.getElementById('previewImage');
+      const previewVideo = document.getElementById('previewVideo');
+      const screenEmpty = document.getElementById('screenEmpty');
+
+      const toggleUiOverlay = document.getElementById('toggleUiOverlay');
+      const toggleSafeZone = document.getElementById('toggleSafeZone');
+      const toggleThemeMode = document.getElementById('toggleThemeMode');
+      const opacitySlider = document.getElementById('opacitySlider');
+      const opacityValue = document.getElementById('opacityValue');
+
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const playPauseLabel = document.getElementById('playPauseLabel');
+      const playIcon = document.getElementById('playIcon');
+      const pauseIcon = document.getElementById('pauseIcon');
+      const downloadPngBtn = document.getElementById('downloadPngBtn');
+
+      const ytUiLayer = document.getElementById('ytUiLayer');
+      const safeZoneLayer = document.getElementById('safeZoneLayer');
+
+      let currentObjectUrl = null;
+      let isVideoLoaded = false;
+
+      function revokeCurrentUrl() {
+        if (currentObjectUrl) {
+          URL.revokeObjectURL(currentObjectUrl);
+          currentObjectUrl = null;
+        }
+      }
+
+      function updatePlayPauseUI(isPlaying) {
+        if (isPlaying) {
+          playPauseLabel.textContent = 'Pause';
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
+        } else {
+          playPauseLabel.textContent = 'Play';
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+        }
+      }
+
+      function resetMedia() {
+        revokeCurrentUrl();
+        isVideoLoaded = false;
+
+        previewImage.classList.remove('is-active');
+        previewImage.removeAttribute('src');
+
+        previewVideo.pause();
+        previewVideo.classList.remove('is-active');
+        previewVideo.removeAttribute('src');
+        previewVideo.load();
+
+        screenEmpty.classList.remove('is-hidden');
+        fileStatus.classList.remove('is-visible');
+        fileNameEl.textContent = 'No file loaded';
+        mediaInput.value = '';
+
+        playPauseBtn.disabled = true;
+        updatePlayPauseUI(false);
+      }
+
+      function handleFile(file) {
+        if (!file) return;
+
+        const isImg = file.type.startsWith('image/');
+        const isVid = file.type.startsWith('video/');
+
+        if (!isImg && !isVid) {
+          alert('Please choose a PNG, JPG, WebP image or an MP4/WebM video file.');
+          return;
+        }
+
+        revokeCurrentUrl();
+        currentObjectUrl = URL.createObjectURL(file);
+
+        screenEmpty.classList.add('is-hidden');
+        fileStatus.classList.add('is-visible');
+        fileNameEl.textContent = file.name;
+
+        if (isImg) {
+          isVideoLoaded = false;
+          previewVideo.pause();
+          previewVideo.classList.remove('is-active');
+          previewVideo.removeAttribute('src');
+
+          previewImage.src = currentObjectUrl;
+          previewImage.classList.add('is-active');
+
+          playPauseBtn.disabled = true;
+          updatePlayPauseUI(false);
+        } else {
+          isVideoLoaded = true;
+          previewImage.classList.remove('is-active');
+          previewImage.removeAttribute('src');
+
+          previewVideo.src = currentObjectUrl;
+          previewVideo.classList.add('is-active');
+          playPauseBtn.disabled = false;
+
+          previewVideo.play()
+            .then(() => updatePlayPauseUI(true))
+            .catch(() => updatePlayPauseUI(false));
+        }
+      }
+
+      // Generate a crisp 1080x1920 sample preview image locally via Canvas
+      function loadSamplePreview() {
+        const c = document.createElement('canvas');
+        c.width = 1080;
+        c.height = 1920;
+        const ctx = c.getContext('2d');
+
+        // Studio background gradient
+        const grad = ctx.createLinearGradient(0, 0, 1080, 1920);
+        grad.addColorStop(0, '#1e293b');
+        grad.addColorStop(0.45, '#0f172a');
+        grad.addColorStop(1, '#1e1b4b');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        // Subtle studio lighting circles
+        const glow1 = ctx.createRadialGradient(340, 620, 40, 340, 620, 460);
+        glow1.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
+        glow1.addColorStop(1, 'rgba(56, 189, 248, 0)');
+        ctx.fillStyle = glow1;
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        const glow2 = ctx.createRadialGradient(780, 1180, 40, 780, 1180, 420);
+        glow2.addColorStop(0, 'rgba(255, 0, 51, 0.22)');
+        glow2.addColorStop(1, 'rgba(255, 0, 51, 0)');
+        ctx.fillStyle = glow2;
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        // Mock subject silhouette / camera frame
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.beginPath();
+        ctx.arc(460, 740, 175, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.roundRect(230, 940, 460, 460, 160);
+        ctx.fill();
+
+        // Safe Hook Text (inside green safe area)
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#facc15';
+        ctx.font = '800 68px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('THIS HOOK STAYS', 456, 500);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('100% READABLE', 456, 582);
+
+        // Safe Subtitle pill
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.beginPath();
+        ctx.roundRect(108, 1010, 696, 146, 26);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 46px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('Place dynamic captions', 456, 1072);
+        ctx.fillStyle = '#4ade80';
+        ctx.fillText('right above the bottom zone', 456, 1126);
+
+        // Example of blocked text at bottom (demonstrates why checker matters)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.font = '700 38px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('Text down here gets blocked by UI', 480, 1520);
+
+        revokeCurrentUrl();
+        isVideoLoaded = false;
+
+        previewVideo.pause();
+        previewVideo.classList.remove('is-active');
+        previewVideo.removeAttribute('src');
+
+        previewImage.src = c.toDataURL('image/png');
+        previewImage.classList.add('is-active');
+        screenEmpty.classList.add('is-hidden');
+
+        fileStatus.classList.add('is-visible');
+        fileNameEl.textContent = 'sample-shorts-preview.png (1080×1920)';
+        playPauseBtn.disabled = true;
+        updatePlayPauseUI(false);
+      }
+
+      // Generate & Download Transparent 1080x1920 PNG Safe Zone Template
+      function downloadSafeZonePng() {
+        const w = 1080;
+        const h = 1920;
+        const topH = 288;     // 15%
+        const bottomH = 672;  // 35%
+        const rightW = 216;   // 20%
+        const leftW = 48;     // 4.44%
+        const safeW = w - leftW - rightW;   // 816px
+        const safeH = h - topH - bottomH;   // 960px
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        // Fully transparent background
+        ctx.clearRect(0, 0, w, h);
+
+        // Semi-transparent red danger zones (non-overlapping bands for uniform alpha)
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.30)';
+        ctx.fillRect(0, 0, w, topH);                          // Top 15%
+        ctx.fillRect(0, h - bottomH, w, bottomH);             // Bottom 35%
+        ctx.fillRect(w - rightW, topH, rightW, safeH);        // Right 20%
+
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.18)';
+        ctx.fillRect(0, topH, leftW, safeH);                  // Left 48px margin
+
+        // Subtle danger zone border lines
+        ctx.strokeStyle = 'rgba(248, 113, 113, 0.85)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, topH);
+        ctx.lineTo(w, topH);
+        ctx.moveTo(0, h - bottomH);
+        ctx.lineTo(w, h - bottomH);
+        ctx.moveTo(w - rightW, topH);
+        ctx.lineTo(w - rightW, h - bottomH);
+        ctx.stroke();
+
+        // Green dashed safe zone box
+        ctx.save();
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 6;
+        ctx.setLineDash([22, 14]);
+        ctx.strokeRect(leftW + 3, topH + 3, safeW - 6, safeH - 6);
+        ctx.restore();
+
+        // Labels
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '700 30px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+        ctx.fillText('TOP DANGER ZONE — 288px (15%)', w / 2, topH / 2);
+        ctx.fillText('BOTTOM DANGER ZONE — 672px (35%)', w / 2, h - bottomH + 96);
+
+        ctx.font = '600 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
+        ctx.fillText('Channel Handle • Subscribe • Video Title • Bottom Nav', w / 2, h - bottomH + 146);
+
+        // Right zone rotated label
+        ctx.save();
+        ctx.translate(w - rightW / 2, topH + safeH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.font = '700 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+        ctx.fillText('RIGHT UI BUTTONS — 216px (20%)', 0, 0);
+        ctx.restore();
+
+        // Safe zone corner pill label
+        ctx.fillStyle = 'rgba(10, 14, 18, 0.78)';
+        ctx.beginPath();
+        ctx.roundRect(leftW + 24, topH + 24, 410, 56, 12);
+        ctx.fill();
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        ctx.font = '700 26px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillStyle = '#4ade80';
+        ctx.fillText('SAFE ZONE: 816 × 960 px', leftW + 46, topH + 53);
+
+        // Trigger PNG download
+        const triggerDownload = (url, shouldRevoke) => {
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'youtube-shorts-safe-zone-1080x1920.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          if (shouldRevoke) {
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+          }
+        };
+
+        if (canvas.toBlob) {
+          canvas.toBlob((blob) => {
+            if (blob) {
+              triggerDownload(URL.createObjectURL(blob), true);
+            } else {
+              triggerDownload(canvas.toDataURL('image/png'), false);
+            }
+          }, 'image/png');
+        } else {
+          triggerDownload(canvas.toDataURL('image/png'), false);
+        }
+      }
+
+      // Event Listeners
+      mediaInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleFile(e.target.files[0]);
+        }
+      });
+
+      ['dragenter', 'dragover'].forEach((evt) => {
+        dropzone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('is-dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach((evt) => {
+        dropzone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('is-dragover');
+        });
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files[0]) {
+          handleFile(files[0]);
+        }
+      });
+
+      dropzone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          mediaInput.click();
+        }
+      });
+
+      clearMediaBtn.addEventListener('click', resetMedia);
+      loadSampleBtn.addEventListener('click', loadSamplePreview);
+
+      toggleUiOverlay.addEventListener('change', () => {
+        ytUiLayer.classList.toggle('is-hidden', !toggleUiOverlay.checked);
+      });
+
+      toggleSafeZone.addEventListener('change', () => {
+        safeZoneLayer.classList.toggle('is-hidden', !toggleSafeZone.checked);
+      });
+
+      toggleThemeMode.addEventListener('change', () => {
+        document.documentElement.setAttribute('data-theme', toggleThemeMode.checked ? 'light' : 'dark');
+      });
+
+      opacitySlider.addEventListener('input', () => {
+        const val = opacitySlider.value;
+        opacityValue.textContent = val + '%';
+        ytUiLayer.style.opacity = String(Number(val) / 100);
+      });
+
+      playPauseBtn.addEventListener('click', () => {
+        if (!isVideoLoaded) return;
+        if (previewVideo.paused) {
+          previewVideo.play().then(() => updatePlayPauseUI(true)).catch(() => {});
+        } else {
+          previewVideo.pause();
+          updatePlayPauseUI(false);
+        }
+      });
+
+      previewVideo.addEventListener('play', () => updatePlayPauseUI(true));
+      previewVideo.addEventListener('pause', () => updatePlayPauseUI(false));
+
+      downloadPngBtn.addEventListener('click', downloadSafeZonePng);
+    })();
+  </script>
+</body>
+</html>
